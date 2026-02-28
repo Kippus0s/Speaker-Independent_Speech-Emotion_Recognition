@@ -49,11 +49,10 @@ N_MFCC = 40
 #   sample_duration   : duration of each sample in seconds
 #   z_score           : whether to z-score normalize at this preprocessing stage ('y' or 'n')
 #   --suffix (optional): suffix for output folder name to avoid overwriting previous runs
-# ex. " python dataset_preprocess.py emodb 16000 4 y " 
-# or " python dataset_preprocess.py savee 16000 3 n --suffix new_output_directory_name" 
+# ex.  python dataset_preprocess.py emodb 16000 4 y 
+# or ex. python dataset_preprocess.py savee 16000 3 n --suffix new_output_directory_name  
 
-# takeargs from command line, which dataset, sample rate, sample duration, whether to z-score normalise or not (y/n) with optional suffix argument for output folder name to avoid overwriting previous runs.
-# With exception handling and attempts to alert user of incorrect arguments
+# parse_args() function to handle command-line arguments with error handling and user prompts for incorrect inputs.
 
 def parse_args():
     parser = argparse.ArgumentParser(
