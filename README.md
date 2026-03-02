@@ -15,7 +15,7 @@ My results support the view that deep learning techniques achieve superior perfo
 
 I concluded my project by creating an ensemble model which averaged the softmax probabilities per class from the three separate CNN models trained on different data representations. With exception to one dataset (IEMOCAP) this improved classification accuracy. 
 
-### Ensemble model accuracies
+### Ensemble model accuracies  
 
 ```
 EmoDB: 91%
