@@ -1,6 +1,7 @@
 # Speaker-Independent Speech Emotion Recognition
-My Bachelor's of Science Computing & IT final project was entitled "Investigating Machine Learning and Deep Learning approaches to Speech Emotion Recognition".
-Uploaded here is an updated and refactored version of said project, designed to be more accessible, maintainable, and for for reproducibility. 
+For the final project of my Bachelor's of Science in Computing & IT, I worked on a Machine Learning (ML) project entitled "Investigating Machine Learning and Deep Learning approaches to Speech Emotion Recognition".
+
+This project is an updated and refactored version, as the original spanned dozens of scripts which were unique to each of the four Speech Emotion Recongition (SER) datasets I utilised.  In addition, this project will verify my results, confirming reproducibility. 
 
 # Project Summary 
 
@@ -66,23 +67,32 @@ audiomentations 0.41.0
 ```
 # Instructions
 
+1. Download the dataset(s).
+   
+2. Extract the dataset(s) into the same project directory, the upper-most folder for each each dataset your project directory "EmoDB" , "IEMOCAP_full_release_withoutVideos" ,
+"RAVDESS" and "SAVEE", which should be the case if you simply extracted the dataset archives directly into your project directory.
 
-1. Download the csv files relevant for the datasets you are interested in, including: emodb.csv iemocap.csv savee.csv and ravdess.csv 
-2. Place these csv files in your porject directory
-3. Acquire and extract datasets into the project directory, the root folder of each dataset that should be in the project directory at the same level as the csv files mentioned above are "EmoDB" , "IEMOCAP_full_release_withoutVideos" , "RAVDESS" and "SAVEE"
+3. Download the csv files relevant for the datasets you are interested in, including: emodb.csv iemocap.csv savee.csv and ravdess.csv, place these csv files in your project directory
+on the same level as the dataset folders.
 
-If you wish to modify a datasets before preprocessing, you must iterate over the entire dataset again and populate a new csv, as this script utilises a csv with file paths to each audio file, rather than recursively exploring the dataset directories. 
+Do not modify the original dataset's files or directory structure
 
-4. To test a model, you must first preprocess the dataset by running preprocess_dataset.py in the command line with the following four arguments explained below:
+4a. >OPENSMILE MODEL PREPROCESSING AND TRAINING>
+4b. Deep Learning model preprocesssing and training To test a model, you must first preprocess the dataset by running preprocess_dataset.py in the command line with the following four arguments explained below:
 
 
-```
-# Command-line arguments:
-#   which_dataset      : which dataset to process (incl. emodb, savee, iemocap, ravdess)
-#   sample_rate       : sampling rate in Hz
-#   sample_duration   : duration of each sample in seconds
-#   z_score           : whether to z-score normalize at this preprocessing stage ('y' or 'n')
-#   --suffix (optional): suffix for output folder name to avoid overwriting previous runs
-# ex.  python dataset_preprocess.py emodb 16000 4 y 
-# or ex. python dataset_preprocess.py savee 16000 3 n --suffix new_output_directory_name  
+  Command-line arguments:
+   ```
+   which_dataset      : which dataset to process (incl. emodb, savee, iemocap, ravdess)
+   sample_rate       : sampling rate in Hz
+   sample_duration   : duration of each sample in seconds
+   z_score           : whether to z-score normalize at this preprocessing stage ('y' or 'n')
+   --suffix (optional): suffix for output folder name to avoid overwriting previous runs
+   
+   ex.  python dataset_preprocess.py emodb 16000 4 y 
+   or ex. python dataset_preprocess.py savee 16000 3 n --suffix new_output_directory_name
+   ```
+
+Next you run the train_model.py with the arguments explained below: 
+
 
