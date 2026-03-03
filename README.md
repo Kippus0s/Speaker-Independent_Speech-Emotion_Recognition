@@ -48,23 +48,8 @@ Vladimir Chernykh, 2018 (54% Accuracy)
 
 
 ### Dependencies 
-The following python packages should be installed
+See requirements.txt
 
-Data preprocessing:
-```
-pandas 2.2.3
-numpy 2.2.5
-librosa 0.11.0
-soundfile 0.13.1
-```
-
-Model training and evaluation:
-```
-tensorflow 2.19.0
-scikit-learn 1.7.0
-sklearn-preprocessing 0.1.0
-audiomentations 0.41.0
-```
 # Instructions
 
 1. Download the dataset(s).
