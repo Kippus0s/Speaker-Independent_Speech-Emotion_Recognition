@@ -89,7 +89,7 @@ def parse_args():
 To preprocess and train models I iterate through a CSV rather which contains direct paths to all audio samples
 used in the study, rather than traversing through the original dataset folders, as this is simpler to implement 
 
-The csv files have been provided. 
+The CSV files have been provided. 
 However, The CSV files needs to be in same root folder as this script so the functions can find it. 
 """
 
@@ -390,3 +390,4 @@ def main():
 if __name__ == "__main__":
     main()
      
+
