@@ -188,7 +188,7 @@ def process_file(file, DATASET, DATATYPE, DATASET_PATH, INPUT_SHAPE):
         
         else: 
             if DATASET == "savee":
-                path = os.path.join(DATASET_PATH, os.path.normpath(file['file']) + ".wav") #THIS IS WHERE I MODIFY!
+                path = os.path.join(DATASET_PATH, os.path.normpath(file['file']) + ".wav") 
             else: 
                 path = os.path.join(DATASET_PATH, os.path.normpath(file['file']))
             data = load_wav(path)
@@ -281,3 +281,4 @@ if __name__ == "__main__":
     main()
 
      
+
