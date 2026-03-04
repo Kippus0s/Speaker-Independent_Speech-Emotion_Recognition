@@ -1,5 +1,6 @@
-Readme: Needs improving in writing and some further information.
+
 # DL models:  Complete refactoring of the the best performing models, ensemble and upload. 
 
 Logistic regression classifiers:  Refactor as necessary. upload csvs.
 
+Readme: More information to provide for any readers, show charts, etc
