@@ -61,10 +61,6 @@ Latif, 2019 (60.23% UAR)
 Vladimir Chernykh, 2018 (54% Accuracy)
 ```
 
-
-### Dependencies 
-See requirements.txt
-
 # Instructions
 
 1. Download the dataset(s).
@@ -96,3 +92,7 @@ Do not modify the original dataset's files or directory structure
 Next you run the train_model.py with the arguments explained below: 
 
 
+
+
+### Dependencies 
+See requirements.txt
