@@ -1,17 +1,21 @@
-# train_model.py
-import argparse 
-import sys
+#otherway_test
 import os
-print("cwd = ", os.getcwd())
-print("sys.path = ", sys.path)
+import pandas as pd
+import numpy as np
+import tensorflow as tf
+import random
+import argparse
+import soundfile as sf
+from audiomentations import Compose, AddGaussianNoise, TimeStretch, PitchShift, Shift, AirAbsorption
+from tensorflow import keras
+from tensorflow.keras import Sequential, optimizers, layers
+from tensorflow.keras.applications import *
+from tensorflow.keras.layers import *
+from tensorflow.keras.regularizers import l2, l1, l1_l2
+from tensorflow.keras.callbacks import EarlyStopping, Callback
 
-project_root = os.path.dirname(os.path.abspath(__file__))  # folder of train_model.py
-if project_root not in sys.path:
-    sys.path.append(project_root)
-from prepare_tf_datasets import create_tf_datasets
-
-#ex python train_model.py emodb mfcc 16000 4 32 fixedduration
-# create_tf_datasets(emodb mfcc 16000 4 32 fixedduration)
+from prepare_tf_datasets import *
+from models import model_spec
 
 # Argument handling
 def parse_args():
@@ -56,11 +60,50 @@ def parse_args():
 
     )
 
+    parser.add_argument(
+        "model_name",
+        type=str,
+        help="The name of the model configuration to train, in the models subdirectory"
+
+    )
+
     args = parser.parse_args()
     return args
 
+
 args = parse_args()
-train_ds, val_ds, test_ds = create_tf_datasets(args.DATASET, args.DATATYPE, args.SAMPLE_RATE, args.SAMPLE_DURATION, args.BATCH_SIZE, args.PREPROCESSED_ROOT_DIR)
-# model = build_model(args.new_arg_for_modelname)
+
+def main(args):
+
+    DATASET = args.DATASET
+    DATATYPE = args.DATATYPE
+    SAMPLE_RATE = args.SAMPLE_RATE
+    SAMPLE_DURATION = args.SAMPLE_DURATION
+    BATCH_SIZE = args.BATCH_SIZE
+    PREPROCESSED_ROOT_DIR = args.PREPROCESSED_ROOT_DIR    
+    model_name = args.model_name
+
+    #Running utility functions to get the dataset path and shape of the data (duration, sample size and data representation all factors)
+    DATASET_PATH = get_dataset_path(DATATYPE, PREPROCESSED_ROOT_DIR, DATASET)
+    root_path = os.path.join(os.getcwd(), DATASET_MAP[DATASET.lower()])
+    df_train = pd.read_csv(os.path.join(root_path, "train.csv"))
+    INPUT_SHAPE = get_input_shape(DATATYPE, DATASET_PATH, df_train, SAMPLE_RATE, SAMPLE_DURATION)
+  
+    #Creating the tensorflow dataset objects, and building the model, passing the training data to normalise
+    train_ds, val_ds, test_ds, INPUT_SHAPE = create_tf_datasets(DATASET, DATATYPE, SAMPLE_RATE, SAMPLE_DURATION, BATCH_SIZE, PREPROCESSED_ROOT_DIR)
+
+
+    # turn the string into a callable
+    model_name = getattr(model_spec, model_name)
+    model, opt = model_name(INPUT_SHAPE, train_ds) 
+    model.compile(optimizer = opt,loss='sparse_categorical_crossentropy',
+                metrics=['accuracy']) 
+    print("Model compiled successfully")
+
+if __name__ == "__main__":
+    main(args)
+
+
 # trained_model =  train_model(model)
 # evaluate_model = model.evaluate() 
+
