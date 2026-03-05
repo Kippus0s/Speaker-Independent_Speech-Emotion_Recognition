@@ -19,7 +19,7 @@ My results support the view that deep learning techniques achieve superior perfo
 
 I concluded my project by creating an ensemble model which averaged the softmax probabilities per class from the three separate CNN models trained on different data representations. With exception to one dataset (IEMOCAP) this improved classification accuracy. 
 
-# Traditional ML model accuracy (logistic Regression model trained on openSMILE's emobase feature set)
+# Traditional-ML Model Cccuracy (Logistic Regression model trained on openSMILE's emobase feature set)
 
 ```
 emoDB: 77.6%
@@ -28,7 +28,7 @@ SAVEE 51.6%
 IEMOCAP: 28%
 ```
 
-# Ensemble model accuracy  
+# Ensemble-Model Accuracy  
 
 ```
 EmoDB: 91%
@@ -38,7 +38,7 @@ IEMOCAP: 44% (This ensemble failed to improve performance, the best performing o
 ```
 
 
-# Comparison with other contemporary research
+# Comparison with contemporary research
 
 I compared my results with other Speaker Independent (SI) studies. The EmoDB ensemble performs among the top performing speaker independent models, despite using a relatively simple and lightweight approach. I found only one work which outperformed my EmoDB ensemble, Amjad et al. 2021 achieved 92.65% WAR, compared to my model's 91% WAR. Xu et al. 2022 also reported 90.61% Accuracy and Farooq et al. 2020 reported 90.5%. 
 
