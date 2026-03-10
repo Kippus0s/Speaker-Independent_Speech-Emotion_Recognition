@@ -1,5 +1,7 @@
 
 # DL models:  Finish the ensemble model creator. 
+Add training graph creation in train_model
+or refactor relegate this and related functionality to an evaluate function as chosen. 
 
 Logistic regression classifiers:  Refactor as necessary. upload csvs.
 
