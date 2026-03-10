@@ -16,7 +16,6 @@ This is to ensure parity between repeated tests"""
 tf.keras.backend.clear_session()
 tf.config.experimental.enable_op_determinism()
 seed = 69
-SEED = 69
 tf.random.set_seed(seed)
 np.random.seed(seed)
 random.seed(seed)
@@ -63,15 +62,19 @@ def get_dataset_path(DATATYPE, PREPROCESSED_ROOT_DIR, DATASET):
             datatype_temp
         )
 
-    print("DATASET_PATH =", DATASET_PATH)
     return DATASET_PATH
 
 
-def get_input_shape(DATATYPE, DATASET_PATH, df_train, SAMPLE_RATE, SAMPLE_DURATION):
+def get_input_shape(DATASET, DATATYPE, DATASET_PATH, df_train, SAMPLE_RATE, SAMPLE_DURATION):
     #Offline dataset creation with uniform samples, inspect first to determine data shape without having to refer to mel/mfcc cr eation constants and calculate
     first_file = df_train.iloc[0]['file']
     if DATATYPE in ("mfcc", "mel"):
-        path = os.path.join(DATASET_PATH, os.path.normpath(first_file[:-4] + ".npy"))
+        
+        if DATASET == "savee":
+            path = os.path.join(DATASET_PATH, os.path.normpath(first_file + ".npy"))
+        else: 
+            path = os.path.join(DATASET_PATH, os.path.normpath(first_file[:-4] + ".npy"))
+        
         sample = np.load(path)
         INPUT_SHAPE = sample.shape + (1,)   # add channel dimension
 
@@ -92,32 +95,34 @@ augment = Compose([
 
 def load_augment(path):
     data, samplerate = sf.read(path, dtype='float32') # returns tf tensor array    
-    print("len of original file" , len(data))
-    print("loaded data and samplerate from sf file")
     augmented_data = augment(samples=data,sample_rate=samplerate)   
-    print("augmented data complete")
-    print("len of augmented file" , len(augmented_data))
-    return tf.convert_to_tensor(augmented_data) # this is one file , i can pass this instead
+    
+    return tf.convert_to_tensor(augmented_data, dtype=tf.float32) # this is one file , i can pass this instead
 
 def load_wav(path):    
     data, samplerate = sf.read(path) # returns tf tensor array    
-    print(path)
-    return tf.convert_to_tensor(data) 
+    return tf.convert_to_tensor(data, dtype=tf.float32) 
 
 
 # A modified process_file function which implements audio augmentations replace this with condition check for process file
 def process_file_aug(file, DATASET, DATASET_PATH, INPUT_SHAPE):
-    print("processing augmentation file")
-    path = os.path.join(DATASET_PATH, os.path.normpath(file['file']))
+    if DATASET == "savee":
+        path = os.path.join(DATASET_PATH, os.path.normpath(file['file']) + ".wav") 
+    else: 
+        path = os.path.join(DATASET_PATH, os.path.normpath(file['file']))
+    
     audio_tensor = load_augment(path)
     audio_tensor = tf.reshape(audio_tensor, INPUT_SHAPE)
     label = LABEL_MAP[DATASET][file['emotion']]
     return audio_tensor, label
 
 def process_file(file, DATASET, DATATYPE, DATASET_PATH, INPUT_SHAPE):
-        print("processing file")
         if DATATYPE == 'mfcc' or DATATYPE == 'mel':
-            path = os.path.join(DATASET_PATH,os.path.normpath(file['file'][:-4]+".npy"))
+            
+            if DATASET == "savee":
+                path = os.path.join(DATASET_PATH, os.path.normpath(file['file']+".npy"))
+            else: 
+                path = os.path.join(DATASET_PATH,os.path.normpath(file['file'][:-4]+".npy"))
             data = np.load(path)
             data = tf.reshape(data, INPUT_SHAPE)
         
@@ -135,7 +140,7 @@ def create_tf_dataset(df, DATASET, DATATYPE, DATASET_PATH, BATCH_SIZE, INPUT_SHA
     ds = tf.data.Dataset.from_generator(
     lambda: iter(process_file(file,DATASET, DATATYPE, DATASET_PATH, INPUT_SHAPE) for _, file in df.iterrows()),
     output_signature=(
-        tf.TensorSpec(shape= INPUT_SHAPE, dtype=tf.float32),  # audio 
+        tf.TensorSpec(shape= (INPUT_SHAPE), dtype=tf.float32),  # audio 
         tf.TensorSpec(shape=(), dtype=tf.int32)          # label
     ))
    
@@ -170,24 +175,28 @@ def create_datasets(df_train, df_val, df_test, DATASET, DATATYPE, SAMPLE_RATE, S
             train_ds = train_ds.concatenate(train_ds_aug)
         else:
             train_ds = create_tf_dataset(df_train, DATASET, DATATYPE, DATASET_PATH, BATCH_SIZE, INPUT_SHAPE)
+
         
-        val_ds = create_tf_dataset(df_val, DATASET, DATATYPE, DATASET_PATH, BATCH_SIZE, INPUT_SHAPE, shuffle=False)
+        
+        val_ds = create_tf_dataset(df_val, DATASET, DATATYPE, DATASET_PATH, BATCH_SIZE, INPUT_SHAPE, shuffle=True)
+
+        if DATASET == "savee":
+            train_ds = train_ds.concatenate(val_ds) #Validation is not used during training, and the model was not optimised as such
+
         test_ds = create_tf_dataset(df_test, DATASET, DATATYPE, DATASET_PATH, BATCH_SIZE, INPUT_SHAPE, shuffle=False)
         
         return train_ds, val_ds, test_ds
 
 #Using utility functiosn from prepare_tf_datasets, we now create the tf dataset objects for training, validation and testing.
 def create_tf_datasets(DATASET, DATATYPE, SAMPLE_RATE, SAMPLE_DURATION, BATCH_SIZE, PREPROCESSED_ROOT_DIR):
-    print("DATATYPE =", DATATYPE)
-
     #Creating the tensorflow dataset objects
     root_path = os.path.join(os.getcwd(), DATASET_MAP[DATASET.lower()])
     df_train = pd.read_csv(os.path.join(root_path, "train.csv"))
     df_val   = pd.read_csv(os.path.join(root_path, "val.csv"))
     df_test  = pd.read_csv(os.path.join(root_path, "test.csv"))
-
+    
     DATASET_PATH = get_dataset_path(DATATYPE, PREPROCESSED_ROOT_DIR, DATASET)
-    INPUT_SHAPE = get_input_shape(DATATYPE, DATASET_PATH, df_train, SAMPLE_RATE, SAMPLE_DURATION)
+    INPUT_SHAPE = get_input_shape(DATASET, DATATYPE, DATASET_PATH, df_train, SAMPLE_RATE, SAMPLE_DURATION)
     
 
     train_ds, val_ds, test_ds =  create_datasets(df_train, df_val, df_test, DATASET, DATATYPE, SAMPLE_RATE, SAMPLE_DURATION, BATCH_SIZE, DATASET_PATH, INPUT_SHAPE)
