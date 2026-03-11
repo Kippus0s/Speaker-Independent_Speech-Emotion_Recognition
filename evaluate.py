@@ -12,7 +12,7 @@ from tensorflow.keras.callbacks import EarlyStopping, Callback
 from sklearn.metrics import accuracy_score, classification_report
 
 
-def save_weight_history(model, history, filename):
+def save_weight_history(model, history, filename,test_ds):
     #Saving weights and training history 
     os.makedirs("weights", exist_ok=True)
     model.save(os.path.join(os.getcwd(), "weights", filename + "_weights.keras"))
@@ -21,7 +21,23 @@ def save_weight_history(model, history, filename):
     with open((os.path.join(os.getcwd(), "training_history", filename + "_history")), 'w') as f:
         json.dump(history.history, f)
 
+    os.makedirs("model_predictions", exist_ok=True)
+    preds = model.predict(test_ds)
+    np.save(str(filename) + "_preds", preds)
+    np.save(os.path.join(os.getcwd(), "model_predictions", filename + "_preds.npy"), preds)
 
+
+def save_preds_and_true(filename, test_ds):
+
+    # Extract true labels for test set
+    true_labels = []
+    for _, labels in test_ds.unbatch():
+        true_labels.append(labels.numpy())
+    true_labels = np.array(true_labels)
+
+    # Save for ensemble use
+    os.makedirs("model_predictions", exist_ok=True)
+    np.save(os.path.join("model_predictions", filename + "_true.npy"), true_labels)
 
 def plot_cm(model, filename, test_ds, DATASET, LABEL_MAP):
         #Generate normalised confusion matrices
