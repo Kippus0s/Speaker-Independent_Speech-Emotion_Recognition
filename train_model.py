@@ -90,8 +90,7 @@ def parse_args():
   
     args = parser.parse_args()
     return args
-#Derive cmdline args
-args = parse_args()
+
 
 def main(args):
     #Take args
@@ -152,5 +151,8 @@ def main(args):
     
     
 if __name__ == "__main__":
+    #Derive cmdline args
+    args = parse_args()
     main(args)
+
 
