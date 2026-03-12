@@ -1,9 +1,8 @@
 
-# DL models:  Finish the ensemble model creator. 
-Add training graph creation in train_model
-or refactor relegate this and related functionality to an evaluate function as chosen. 
+# DL models: 
+Add training graph creation in train_model or evaluate
 
-Logistic regression classifiers:  Refactor as necessary. upload csvs.
+Logistic regression classifiers:  Refactor as necessary. upload csvs as necessary.
 
-Readme: More information to provide for any readers, show charts, etc
-I need also retest all models and ensembles because there are small differences in the dataset due to preprocessing intracies relating to floating point accuracy.
+Readme: More information, references, etc. 
+
