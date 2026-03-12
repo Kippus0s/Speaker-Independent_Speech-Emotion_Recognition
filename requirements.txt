@@ -6,6 +6,9 @@ tensorflow 2.19.0
 scikit-learn 1.7.0
 sklearn-preprocessing 0.1.0
 audiomentations 0.43.1
+opensmile 2.6.0
+audb 1.11.4
+
 
 
 
