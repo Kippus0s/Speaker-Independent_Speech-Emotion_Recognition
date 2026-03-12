@@ -104,7 +104,7 @@ def get_dataset_paths(which_dataset):
     elif which_dataset == "iemocap":
         dataset_name = "IEMOCAP"
         data_path = os.path.join(cwd, dataset_name)
-        DATASET_PATH = os.path.normpath(cwd+"\IEMOCAP_full_release_withoutVideos\IEMOCAP_full_release")
+        DATASET_PATH = os.path.join(cwd,"IEMOCAP_full_release_withoutVideos","IEMOCAP_full_release")
         csv_path = os.path.join(cwd, "csv", "iemocap.csv")
         
     elif which_dataset == "ravdess":
@@ -129,6 +129,7 @@ def listwavs(dataframe, SAMPLE_RATE, dataset_name, dataset_path, data_path):
      list_wavs = []
      for file in dataframe['file']:
           audio_file_path = audio_file_parser(file, dataset_name, dataset_path)
+          print("audio_file_path = ", audio_file_path)
           x, _ = lr.load(audio_file_path, sr=SAMPLE_RATE)
           list_wavs.append(x)
      return list_wavs
@@ -138,12 +139,12 @@ def audio_file_parser(file, dataset_name, dataset_path):
                audio_file_path = os.path.join(dataset_path, os.path.normpath(file)) 
           elif dataset_name == "SAVEE":
                audio_file_path = os.path.join(dataset_path, os.path.normpath(file) + ".wav")
-               print("normpath(file) gives ", os.path.normpath(file))
+               
           elif dataset_name == "RAVDESS":
                audio_file_path = os.path.join(dataset_path, file[0:8], file[9:])              
           else: #IEMOCAP
-               audio_file_path = os.path.join(dataset_path, os.path.normpath(file)) #NOT WORKING YET
-          print("audio file path: ", audio_file_path)
+               audio_file_path = os.path.join(dataset_path, os.path.normpath(file)) 
+          
           return audio_file_path
 
 def trim_wave(wave, SAMPLE_DURATION, SAMPLE_RATE):
@@ -206,7 +207,7 @@ def data_split(which_dataset, df, data_path):
           print(len(df_train))
           print(len(df_val))
           print(len(df_test))
-
+          
   
 # Audio sample duration andsample rate adjustment, and optional z-score normalisation.
 def norm_script(which_dataset, z_score, DATASET_PATH, data_path, dataset_name, SAMPLE_RATE, SAMPLE_DURATION, csv_path, out_path, output_arg, df):     
@@ -254,7 +255,9 @@ def norm_script(which_dataset, z_score, DATASET_PATH, data_path, dataset_name, S
           df.to_csv(which_dataset + output_arg + "_preprocessed.csv")
 
      print("Progress: Z-score normalisation and fixing of sample duration completed")
+     print
 
+   
 
 # Deriving Mel Spectrograms and MFCCs from the normalised and duration-adjusted samples, and writing the paths to these new features to a CSV file     
 def mel_mfcc(out_path, which_dataset, SAMPLE_RATE, df, output_arg):
@@ -383,8 +386,10 @@ def main():
     df = pd.read_csv(csv_path)
     output_arg = output_dir
 
+    
     # Run the main preprocessing functions in order
     data_split(which_dataset, df, data_path)
+    #norm_script_test(which_dataset, z_score, DATASET_PATH, data_path, dataset_name, SAMPLE_RATE, SAMPLE_DURATION, csv_path, out_path, output_arg, df)
     norm_script(which_dataset, z_score, DATASET_PATH, data_path, dataset_name, SAMPLE_RATE, SAMPLE_DURATION, csv_path, out_path, output_arg, df)
     mel_mfcc(out_path, which_dataset, SAMPLE_RATE, df, output_arg)
 
