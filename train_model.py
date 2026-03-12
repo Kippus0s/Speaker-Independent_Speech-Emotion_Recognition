@@ -145,14 +145,12 @@ def main(args):
     # and rendering a class-by-class accuracy report
     filename = str(DATASET) + "_" + str(DATATYPE)
     save_weight_history(model,history,filename,test_ds)
-    save_preds_and_true(filename, test_ds)
+    save_preds_and_true(model, filename, test_ds)
     plot_cm(model, filename, test_ds, DATASET, LABEL_MAP)
     display_class_report(model,test_ds)
     
     
 if __name__ == "__main__":
-    #Derive cmdline args
     args = parse_args()
     main(args)
-
 
