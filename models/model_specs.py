@@ -64,7 +64,7 @@ def emodb_mel(INPUT_SHAPE, train_ds):
     x = MaxPooling2D(pool_size=(3,3))(x)
     x = GlobalAveragePooling2D()(x)
     x = Flatten()(x)
-    x = Dropout(0.4)(x) # JUST ADDED THIS TRYINGTO BEAT 68.9
+    x = Dropout(0.4)(x) 
     output = Dense(7, activation='softmax')(x)
 
     model = tf.keras.Model(inputs=inputs, outputs=output)
@@ -177,32 +177,37 @@ def ravdess_mel(INPUT_SHAPE, train_ds):
 def ravdess_mfcc(INPUT_SHAPE, train_ds):
     norm_layer = layers.Normalization(input_shape = INPUT_SHAPE)
     norm_layer.adapt(train_ds.map(lambda x, y: x))
+
     inputs = Input(INPUT_SHAPE)
     x = norm_layer(inputs)
-    x = Conv2D(64, kernel_size=(11,11),padding="same")(x)   
+    x = Conv2D(32, kernel_size=(11,11),padding="same")(x)   
     x = BatchNormalization()(x)
     x = ReLU()(x)
     x = MaxPooling2D(pool_size=(2,2))(x)
-    x = Conv2D(64, kernel_size=(7,7),padding="same")(x)   
+    x = Conv2D(64, kernel_size=(7,7))(x)   
     x = BatchNormalization()(x)
     x = ReLU()(x)
     x = MaxPooling2D(pool_size=(2,2))(x)
-    x = Conv2D(128, kernel_size=(7,7),padding="same")(x)
+    x = Conv2D(128, kernel_size=(5,5), padding='same')(x)
     x = BatchNormalization()(x)
     x = ReLU()(x)
     x = MaxPooling2D(pool_size=(2,2))(x)
-    x = Conv2D(256, kernel_size=(3,3), padding='same')(x)
+    x = Conv2D(256, kernel_size=(5,5), padding='same')(x)
     x = BatchNormalization()(x)
     x = ReLU()(x)
-    x = MaxPooling2D(pool_size=(2,2))(x)
+    x = MaxPooling2D(pool_size=(3,3))(x)
     x = GlobalAveragePooling2D()(x)
-    x= Dropout(0.4)(x)
     x = Flatten()(x)
-    output = Dense(7, activation='softmax')(x)
+    x = Dense(256)(x)
+    x = BatchNormalization()(x)
+    x = Dropout(0.5)(x)
+
+    output = Dense(8, activation='softmax')(x)
+
 
     model = tf.keras.Model(inputs=inputs, outputs=output)
     epoch_count = 100
-    model_callbacks = [callbacks.EpochTimer(), callbacks.Earlystop_3(), callbacks.Plateau_decay_2()]
+    model_callbacks = [callbacks.EpochTimer(), callbacks.Earlystop_2(), callbacks.Plateau_decay_5()]
     return model, model_callbacks, epoch_count
 
 def iemocap_wav(INPUT_SHAPE, train_ds):
@@ -404,5 +409,3 @@ def savee_mfcc(INPUT_SHAPE, train_ds):
     epoch_count = 46
     model_callbacks = [callbacks.EpochTimer()]
     return model, model_callbacks, epoch_count
-    
-     
