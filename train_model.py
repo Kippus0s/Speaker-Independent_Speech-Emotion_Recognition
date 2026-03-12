@@ -21,6 +21,43 @@ from utilities.class_weight import class_weight_maker
 from prepare_tf_datasets import *
 from models import model_specs, callbacks
 
+"""
+Usage:
+Ex: emodb mfcc 16000 4 16 norm_and_fixedduration emodb_mfcc y
+
+DATASET
+Choices: "emodb", "iemocap", "ravdess", "savee"
+Specifies which dataset to use for training. Used for dataset path resolution and loading appropriate CSV metadata.
+
+DATATYPE
+Choices: "wav", "mel", "mfcc"
+Defines the type of input representation (raw waveform, Mel spectrogram, or MFCC features). Determines preprocessing and model input shape.
+
+SAMPLE_RATE
+Sets the audio sampling rate for loading or interpreting audio files. Used in dataset creation to ensure consistent temporal resolution.
+
+SAMPLE_DURATION
+Sets the length of audio clips in seconds. Influences input tensor shape and dataset preparation.
+
+BATCH_SIZE
+Defines the batch size for training and validation. Impacts memory usage and gradient update frequency.
+
+PREPROCESSED_ROOT_DIR
+Directory where preprocessed data is stored. Optionally set in dataset_preprocess arguments, or "fixedduration"or "norm_and_fixedduration" if left to default depending on if z_score normalisation was selected in dataset_preprocess arguments
+Used to locate the preprocessed dataset files
+
+model_name
+Specifies the model configuration to use from models.model_specs. Dynamically converted to a callable that returns a compiled model.
+
+normalise_class_weights
+Type: str
+Choices: "y", "n"
+Default: "n"
+Purpose: If "y", class weights are normalized to balance the contribution of each class during training. Affects the class_weight argument in model.fit().
+"""
+
+
+
 #Determinism via seeding and enforcing deterministic gpu operations - ensuring identical results between runs
 tf.keras.backend.clear_session()
 tf.config.experimental.enable_op_determinism()
@@ -153,4 +190,5 @@ def main(args):
 if __name__ == "__main__":
     args = parse_args()
     main(args)
+
 
