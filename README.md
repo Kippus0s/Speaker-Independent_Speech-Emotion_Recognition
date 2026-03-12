@@ -1,35 +1,51 @@
 # Speaker-Independent Speech Emotion Recognition
 For the final project of my Bachelor's of Science in Computing & IT, I worked on a Machine Learning (ML) project entitled "Investigating Machine Learning and Deep Learning approaches to Speech Emotion Recognition".
 
-This project is an updated and refactored version, as the original spanned dozens of scripts which were unique to each of the four Speech Emotion Recongition (SER) datasets I utilised.  In addition, this project will verify my results, confirming reproducibility. 
+This project was created to verify the integrity of my results, and as an updated and refactored version of the original implementation. The project has been refactored and reorganised, allowing the same components to work across the different dataset, and with command line arguments modifying hyperparameter values. I hope it can be of assistance to others embarking undertaking ML-based or ML-assisted research, and especially Speech Emotion Recognition (SER) research. 
 
 # Project Summary 
-The project compared a traditional ML approach on SER with that of the modern Deep Learning (DL) approach. The study was speaker-independent, meaning that the model's training data was segmented by speaker, in this way the model was not exposed to audio samples from the same speaker across splits. This is due to speaker-specific qualities "leaking" into the learning process in speaker-dependent studies, where training data includes samples from all speakers in the total dataset. An SER model can not be considered to be truly generalisable if it is speaker-dependent. 
+The project compared the traditional ML approach to SER with that of the modern Deep Learning (DL) approach. The study stands out amongst many contemporary work in the domain by virtue of being speaker-independent. That is, the model's training, validation and test data were segmented by speaker rather than purely by a arbritary percentage of the total dataset size. As a result, the model was not exposed to audio samples from the same voice that featured in validation or test data. This is because peaker-specific qualities "leak" into the learning process in speaker-dependent studies where training data includes samples from all speakers in the total dataset. Speaker-independent models usually do not perform on par with speaker-independent models, but an SER model can not be considered truly generalisable if it is speaker-dependent. 
 
-The traditional ML approach is that of utilising handcrafted features, in this case I used the emobase feature set extracted  with OpenSMILE, which were used to train a logistic regression classifier. 
-The DL approach followed, which utilised Convolutional Neural Networks (CNN) trained on three data representations separately, the raw waveforms (WAV), Mel Spectrograms, and Mel Frequency Cepstrum Coefficients (MFFCs).
-Ultimately I created a simple aggregation-based ensemble (post-fusion model) for each dataset which aggregated the predicted class probabilities from the models trained on each of the three different data representations. 
+The traditional ML approach was that of utilising handcrafted features, in this case I used OpenSMILE (open-source Speech and Music Interpretation by Large-space Extraction) to extract features according to the emobase feature set, and these features were then used to train a logistic regression classifier. 
 
-Results were compared across the four datasets, between the CNN models and the different data representations, and between the CNN models and traditional ML classifier.
-Most of the time was spent experimenting with data preprocessing optimisations, and neural network architecture optimisations for the CNNs, and after multiple iterations the DL approach outperformed the traditional ML approach despite it's leveraging of heuristic features. 
+For the DL approach, I utilised a simple approach relative to the state of the art, my project utilises predominantly Convolutional Neural Networks (CNN), however I trained on three data representations separately, the raw waveforms (WAV), Mel Spectrograms, and Mel Frequency Cepstrum Coefficients (MFFCs). During my work I noticed that different models, especially from each of the different data representations, would often excel or struggle especially with certain emotions in particular, and it was rare that all the emotions were learned with a similar level of success. I therefore create a "post-fusion" or "late-fusion" ensemble model, by aggregating the class-probabilties (predictions) of the best-performing models for each of the data representations. In this way I demonstrated that a simple aggregate model can improve upon my single best-performing individual models. 
 
-Four of the main datasets for SER were used, EmoDB, IEMOCAP, SAVEE, and RAVDESS, and the work adopted a speaker-independent approach whereby the entirety of at least one speaker's speech samples were excluded from training and used exclusively for testing, in this way there is no bleeding of speaker-specific qualities into the training data. This approach consistently proves to be more challenging for ML models, and it is thought that this improves model generalisability.
+Results were compared across the four datasets, between the CNN models and the different data representations, and between the Dland traditional ML classifier.
 
-My results support the view that deep learning techniques achieve superior performance on speaker-independent speech emotion recognition compared to traditional ML approaches that rely on domain knowledge via handcrafted audio features.
+Most of the time on my project was spent researching, and experimenting with data preprocessing optimisations, for example regarding neural network architecture optimisations for the CNNs, and after multiple iterations the DL approach outperformed the traditional ML approach despite it's leveraging of heuristic features. 
 
-I concluded my project by creating an ensemble model which averaged the softmax probabilities per class from the three separate CNN models trained on different data representations. With exception to one dataset (IEMOCAP) this improved classification accuracy. 
+Four datasets for SER were used, EmoDB, IEMOCAP, SAVEE, and RAVDESS, and between them I try and capture a balance and variety in dataset attributes. 
 
-# Traditional-ML Model Accuracy (Logistic Regression model trained on openSMILE's emobase feature set)
+In conclusion, results support the view that deep learning techniques achieve superior performance on speaker-independent speech emotion recognition compared to traditional ML approaches that rely on domain knowledge via handcrafted audio features.
 
-```
-emoDB: 77.6%
-RAVDESS 55.8%
-SAVEE 51.6%
-IEMOCAP: 28%
-```
+# Speech Emotion Recognition Datasets Used in This Project
+Dataset Characteristics
+
+| Attribute | Emo-DB | SAVEE | IEMOCAP | RAVDESS |
+|---|---|---|---|---|
+| Full Name | Berlin Database of Emotional Speech | Surrey Audio-Visual Expressed Emotion Database | Interactive Emotional Dyadic Motion Capture Database | Ryerson Audio-Visual Database of Emotional Speech and Song |
+| Year Released | 2005 | 2007 | 2008 | 2018 |
+| Language | German | English | English | English |
+| Modality | Audio only | Audio + Video | Audio + Video + Motion Capture | Audio + Video |
+| Labels | Emotion: anger, boredom, disgust, fear, happiness, sadness, neutral | Emotion: anger, boredom, disgust, fear, happiness, sadness, neutral | Emotion: neutral, frustrated, happy, sad, angry, excited, surprised, other, fearful, disgusted<br>Includes confidence score (0–1) | Emotion: calm, happy, sad, angry, fearful, surprise, disgust<br>Emotion intensity: normal, strong |
+| Speakers | 10 actors (5 male, 5 female) | 4 male actors | 10 actors (5 male, 5 female) | 24 actors (12 male, 12 female) |
+| Emotion Types | 7 | 7 | 10 (acted + spontaneous) | 8 |
+| Speech Type | Scripted sentences | Scripted sentences | Scripted + spontaneous conversations | Scripted sentences |
+| Sampling Rate | 16 kHz | 44.1 kHz | 16 kHz | 48 kHz |
+| Total Duration (approx.) | 45 minutes | 1.5 hours | 12 hours | 2.4 hours |
+| Introductory Paper | Burkhardt, 2005 | Jackson, 2008 | Busso, 2008 | Livingstone, 2018 |
+
+# Traditional-ML Model Accuracy 
+
+| Dataset | Accuracy |
+| --- | ----
+| emoDB | 77.6% |
+| RAVDESS | 55.8% |
+| SAVEE | 51.6% |
+| IEMOCAP | 28% |
+
 
 # Ensemble-Model Accuracy  
-
 
 | Dataset | Accuracy | Notes |
 | --- | --- | ------ |
@@ -66,6 +82,39 @@ EmoDB
 | Xu et al. 2024 | Spectrogram | CNN for local features, GRU for global features, multi-head attention integration | 80.2% UAR | |
 | Rintala 2024 | Raw waveform | CNN + LSTM with parallel branches | 75.78% Accuracy | Based on Latif (2019) architecture |
 
+RAVDESS
+| Study | Data Representation | Methodology | Evaluation Result | Notes |
+|------|--------------------|-------------|------------------|------|
+| Amjad et al. 2021 | Mel Spectrogram | Pre-trained AlexNet feature extraction, CFS feature selection, classification with MLP or traditional ML | 82.75% WAR | MLP performed best |
+| Sayed et al. 2025 | Wavelet Scaled Spectrogram | CNN + LSTM | 73.75% Accuracy | Average of 3 folds |
+| Farooq et al. 2020 | Mel Spectrogram | AlexNet feature extraction + CFS + ML classifiers | 73.50% | MLP gave best result |
+| THIS STUDY | Raw waveform, Mel Spectrogram, MFCC | Ensemble of three CNN models trained on each representation | XXX | |
+| Rintala 2024 | Raw audio | CNN + LSTM with parallel branches | 61.67% Accuracy | Based on Latif (2019) |
+| Human | — | — | 62% Accuracy | |
+
+SAVEE
+| Study | Data Representation | Methodology | Evaluation Result | Notes |
+|------|--------------------|-------------|------------------|------|
+| Amjad et al. 2021 | Mel Spectrogram | Pre-trained AlexNet feature extraction, CFS feature selection, classification via MLP | 75.38% WAR | Best result obtained with MLP |
+| Farooq et al. 2020 | Mel Spectrogram | AlexNet feature extraction + CFS + ML classifiers | 66.90% WAR | MLP performed best |
+| Human | — | — | 66.5% Average Accuracy | |
+| THIS STUDY | Raw waveform, Mel Spectrogram, MFCC | Ensemble of three CNN models trained on different representations | XXX | |
+| Sivanagaraja et al. 2017 | Raw waveform | Multiple convolution branches with different downsampling scales | 50.28% Accuracy | |
+
+IEMOCAP
+| Study | Data Representation | Methodology | Evaluation Result | Notes |
+|------|--------------------|-------------|------------------|------|
+| Amjad et al. 2021 | Mel Spectrogram | Pre-trained AlexNet feature extraction, CFS feature selection, classification via ML algorithms | 84% WAR | SVM performed best |
+| Cai et al. 2021 | wav2vec 2.0 | Multi-task learning using pre-trained wav2vec 2.0 encoding | 78.15% WAR | |
+| Farooq et al. 2020 | Mel Spectrogram | AlexNet feature extraction + CFS + ML classifiers | 73.50% WAR | SVM gave best result |
+| Xu et al. 2022 | Mel Spectrogram, MFCC, handcrafted features | Feature concatenation from three models with additional fully connected model | 73.42% Unweighted Accuracy | |
+| Xu et al. 2024 | Spectrogram | GRU with multi-head attention | 70.2% UAR | |
+| Chen 2018 | 3D Mel Spectrogram | CNN + LSTM + Attention | 64.74% UAR | |
+| Fayek et al. 2017 | Raw waveform | CNN end-to-end | 60.89% UAR | Frame-based approach performed best |
+| Latif 2019 | Raw waveform | CNN + LSTM + DNN | 60.23% UAR | Early parallel-branch SER architecture |
+| Vladimir Chernykh 2018 | MFCC + Chroma features | Frame-wise Bi-LSTM | 54% Accuracy | |
+| THIS STUDY | Raw waveform, Mel Spectrogram, MFCC | Ensemble of three CNN models trained on each representation | TBD | |
+| Han 2014 | Handcrafted features (MFCC, pitch, delta) | DNN feature extraction + ELM classifier | 48.2% UAR | |
 
 # Instructions
 
@@ -102,3 +151,7 @@ Next you run the train_model.py with the arguments explained below:
 
 ### Dependencies 
 See requirements.txt
+
+
+###References
+
