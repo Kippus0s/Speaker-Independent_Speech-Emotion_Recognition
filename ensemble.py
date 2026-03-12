@@ -20,7 +20,28 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from prepare_tf_datasets import *
 from evaluate import * 
 
-#ex: python ensemble.py emodb_wav emodb_mel emodb_mfcc
+"""
+This script uses 3 models to create and test an ensemble model
+ex: python ensemble.py emodb_wav emodb_mel emodb_mfcc
+
+Useage:
+
+Arguments:
+
+dataset
+The name of the dataset you want to process.
+Must correspond to a dataset handled in get_dataset_paths() and DATASET_SPEAKER_DEFAULTS.
+Valid datasets: emodb, savee, iemocap, ravdess 
+
+MODEL1,
+The name of the model in model_specs file that you are including in this ensemble
+MODEL2,
+The second name of the model in model_specs file that you are including in this ensemble
+MODEL3
+The third name of the model in model_specs file that you are including in this ensemble
+
+
+"""
 
 """trained on the same dataset exactly, they were trained on the same dataset but wav, mel and mfcc versions of it. but the correct label is the same as the test dataset isnt shuffled"""
 
