@@ -74,7 +74,7 @@ DL models later used longer samples at times, but at the baseline stage my conce
 | Dataset | Accuracy |
 | --- | ----
 | emoDB | 68.96% |
-| RAVDESS | 49.17.8% |
+| RAVDESS | 49.17% |
 | SAVEE | 54.16% |
 | IEMOCAP | 37.8% |
 
