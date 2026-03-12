@@ -3,6 +3,37 @@ For the final project of my Bachelor's of Science in Computing & IT, I worked on
 
 This project was created to verify the integrity of my results, and as an updated and refactored version of the original implementation. The project has been refactored and reorganised, allowing the same components to work across the different dataset, and with command line arguments modifying hyperparameter values. I hope it can be of assistance to others embarking undertaking ML-based or ML-assisted research, and especially Speech Emotion Recognition (SER) research. 
 
+# Instructions
+
+1. Download the dataset(s).
+   
+2. Extract the dataset(s) into the same project directory, the upper-most folder for each each dataset your project directory "EmoDB" , "IEMOCAP_full_release_withoutVideos" ,
+"RAVDESS" and "SAVEE", which should be the case if you simply extracted the dataset archives directly into your project directory.
+
+3. Download the csv files relevant for the datasets you are interested in, including: emodb.csv iemocap.csv savee.csv and ravdess.csv, place these csv files in your project directory
+on the same level as the dataset folders.
+Do not modify the original dataset's files or directory structure
+
+4 To create the baseline models using the traditional ML approach with openSMILE, run train_baselines.py
+See train_baselines.py for instructions and commandline argument explanations. 
+
+5. Deep Learning model preprocesssing and training To test a model, you must first preprocess the dataset
+   This is performed via preprocess_dataset.py, the arguments required are given and explained within that script.
+   
+7. Train the model using train_model.py, again from the commandline
+
+8. Finally, once you have have trained mulitple models, you can create and test an post-decision ensemble using ensemble.py
+   The training script will have saved predictions in a fixed format and  these will be located and used by ensemble.py depending
+   on the models specified.
+
+
+train_model.py and ensemble.py will print results to the command line for you, and a confusion matrix will also be saved to confusion_matrices folder created in your working directory for you to view.
+
+
+### Dependencies 
+See requirements.txt
+
+
 # Project Summary 
 The project compared the traditional ML approach to SER with that of the modern Deep Learning (DL) approach. The study stands out amongst many contemporary work in the domain by virtue of being speaker-independent. That is, the model's training, validation and test data were segmented by speaker rather than purely by a arbritary percentage of the total dataset size. As a result, the model was not exposed to audio samples from the same voice that featured in validation or test data. This is because peaker-specific qualities "leak" into the learning process in speaker-dependent studies where training data includes samples from all speakers in the total dataset. Speaker-independent models usually do not perform on par with speaker-independent models, but an SER model can not be considered truly generalisable if it is speaker-dependent. 
 
@@ -36,13 +67,14 @@ In conclusion, results support the view that deep learning techniques achieve su
 | Introductory Paper | Burkhardt, 2005 | Jackson, 2008 | Busso, 2008 | Livingstone, 2018 |
 
 # Traditional-ML Model Accuracy 
-
+All classifiers used features extracted from 4 seconds of audio only, at a sample rate of 16000kHz
+DL models later used longer samples at times, but at the baseline stage my concern was with parity among the datasets
 | Dataset | Accuracy |
 | --- | ----
-| emoDB | 77.6% |
-| RAVDESS | 55.8% |
-| SAVEE | 51.6% |
-| IEMOCAP | 28% |
+| emoDB | 68.96% |
+| RAVDESS | 49.17.8% |
+| SAVEE | 54.16% |
+| IEMOCAP | 37.8% |
 
 
 # Ensemble-Model Accuracy  
@@ -117,45 +149,7 @@ IEMOCAP appeared to the most popular dataset for SI SER, and I found the largest
 | THIS STUDY | Raw waveform, Mel Spectrogram, MFCC | Ensemble of three CNN models trained on each representation | 50.45% | The most popular dataset for DL-SER research, the most complex and natural dataset seems to require more complex and intensive approaches than my own|
 | Han 2014 | Handcrafted features (MFCC, pitch, delta) | DNN feature extraction + ELM classifier | 48.2% UAR | |
 
-# Instructions
 
-1. Download the dataset(s).
-   
-2. Extract the dataset(s) into the same project directory, the upper-most folder for each each dataset your project directory "EmoDB" , "IEMOCAP_full_release_withoutVideos" ,
-"RAVDESS" and "SAVEE", which should be the case if you simply extracted the dataset archives directly into your project directory.
-
-3. Download the csv files relevant for the datasets you are interested in, including: emodb.csv iemocap.csv savee.csv and ravdess.csv, place these csv files in your project directory
-on the same level as the dataset folders.
-
-Do not modify the original dataset's files or directory structure
-
-4a. >OPENSMILE MODEL PREPROCESSING AND TRAINING>
-4b. Deep Learning model preprocesssing and training To test a model, you must first preprocess the dataset by running preprocess_dataset.py in the command line with the following four arguments explained below:
-
-5. train_model py
-
-6. ensemble.py
-
-
-  Command-line arguments:
-   ```
-   which_dataset      : which dataset to process (incl. emodb, savee, iemocap, ravdess)
-   sample_rate       : sampling rate in Hz
-   sample_duration   : duration of each sample in seconds
-   z_score           : whether to z-score normalize at this preprocessing stage ('y' or 'n')
-   --suffix (optional): suffix for output folder name to avoid overwriting previous runs
-   
-   ex.  python dataset_preprocess.py emodb 16000 4 y 
-   or ex. python dataset_preprocess.py savee 16000 3 n --suffix new_output_directory_name
-   ```
-
-Next you run the train_model.py with the arguments explained below: 
-
-
-
-
-### Dependencies 
-See requirements.txt
 
 
 ###References
