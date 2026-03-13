@@ -20,30 +20,10 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from prepare_tf_datasets import *
 from evaluate import * 
 
-"""
-This script uses 3 models to create and test an ensemble model
-ex: python ensemble.py emodb_wav emodb_mel emodb_mfcc
-
-Useage:
-
-Arguments:
-
-dataset
-The name of the dataset you want to process.
-Must correspond to a dataset handled in get_dataset_paths() and DATASET_SPEAKER_DEFAULTS.
-Valid datasets: emodb, savee, iemocap, ravdess 
-
-MODEL1,
-The name of the model in model_specs file that you are including in this ensemble
-MODEL2,
-The second name of the model in model_specs file that you are including in this ensemble
-MODEL3
-The third name of the model in model_specs file that you are including in this ensemble
-
-
-"""
+#ex: python ensemble.py emodb_wav emodb_mel emodb_mfcc
 
 """trained on the same dataset exactly, they were trained on the same dataset but wav, mel and mfcc versions of it. but the correct label is the same as the test dataset isnt shuffled"""
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Late fusion ensemble from model predictions")
@@ -76,7 +56,7 @@ def parse_args():
     return parser.parse_args()
 
 def main(args):    
-    predictions_dir = os.path.join(os.getcwd(), "model_predictions")
+    predictions_dir = os.path.join(root_dir, "model_predictions")
     model_names = [args.MODEL1, args.MODEL2, args.MODEL3]
     DATASET = args.DATASET
     # Load predictions and true labels, and aggregate the probabilties
@@ -113,7 +93,7 @@ def main(args):
     plt.xticks(fontsize=5)
     plt.yticks(fontsize=5)
     disp.plot(cmap="Blues",ax=ax)
-    plt.savefig((os.path.join(os.getcwd(), "confusion_matrices", dataset + "_Ensemble" + "_cm.png", )), dpi=300, bbox_inches='tight')
+    plt.savefig((os.path.join(root_dir, "confusion_matrices", dataset + "_Ensemble" + "_cm.png", )), dpi=300, bbox_inches='tight')
     
     
 
