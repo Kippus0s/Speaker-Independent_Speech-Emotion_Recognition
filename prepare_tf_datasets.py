@@ -21,6 +21,7 @@ np.random.seed(seed)
 random.seed(seed)
 os.environ['PYTHONHASHSEED'] = str(seed)
 
+
 # Setting up paths and loading the data splits
 DATASET_MAP = {
         "emodb": "EmoDB",
@@ -36,6 +37,7 @@ LABEL_MAP = {
      'savee': {'anger': 0, 'disgust': 1, 'fear': 2, 'happiness': 3, 'neutral': 4, 'sadness': 5, 'surprise': 6}
 }
 
+root_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def get_dataset_path(DATATYPE, PREPROCESSED_ROOT_DIR, DATASET):
     # Adjust capitalisation to match original dataset directory naming
@@ -50,13 +52,15 @@ def get_dataset_path(DATATYPE, PREPROCESSED_ROOT_DIR, DATASET):
     # Construct dataset path
     if DATATYPE == "wav":
         DATASET_PATH = os.path.join(
-            os.getcwd(),
+            root_path ,
+            "datasets",
             dataset_name,
             PREPROCESSED_ROOT_DIR
         )
     else:
         DATASET_PATH = os.path.join(
-            os.getcwd(),
+            root_path,
+            "datasets",
             dataset_name,
             PREPROCESSED_ROOT_DIR,
             datatype_temp
@@ -190,10 +194,10 @@ def create_datasets(df_train, df_val, df_test, DATASET, DATATYPE, SAMPLE_RATE, S
 #Using utility functiosn from prepare_tf_datasets, we now create the tf dataset objects for training, validation and testing.
 def create_tf_datasets(DATASET, DATATYPE, SAMPLE_RATE, SAMPLE_DURATION, BATCH_SIZE, PREPROCESSED_ROOT_DIR):
     #Creating the tensorflow dataset objects
-    root_path = os.path.join(os.getcwd(), DATASET_MAP[DATASET.lower()])
-    df_train = pd.read_csv(os.path.join(root_path, "train.csv"))
-    df_val   = pd.read_csv(os.path.join(root_path, "val.csv"))
-    df_test  = pd.read_csv(os.path.join(root_path, "test.csv"))
+    csv_path = os.path.join(root_path, DATASET_MAP[DATASET.lower()])
+    df_train = pd.read_csv(os.path.join(csv_path, "train.csv"))
+    df_val   = pd.read_csv(os.path.join(csv_path, "val.csv"))
+    df_test  = pd.read_csv(os.path.join(csv_path, "test.csv"))
     
     DATASET_PATH = get_dataset_path(DATATYPE, PREPROCESSED_ROOT_DIR, DATASET)
     INPUT_SHAPE = get_input_shape(DATASET, DATATYPE, DATASET_PATH, df_train, SAMPLE_RATE, SAMPLE_DURATION)
