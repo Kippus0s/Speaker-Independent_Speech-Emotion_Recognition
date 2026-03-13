@@ -146,7 +146,7 @@ IEMOCAP appeared to the most popular dataset for SI SER, and I found the largest
 | Amjad et al. 2021 | Mel Spectrogram | Pre-trained AlexNet feature extraction, CFS feature selection, classification via MLP | 75.38% WAR | Best result obtained with MLP |
 | Farooq et al. 2020 | Mel Spectrogram | AlexNet feature extraction + CFS + ML classifiers | 66.90% WAR | MLP performed best |
 | Human | — | — | 66.5% Average Accuracy | |
-| This project | Raw waveform, Mel Spectrogram, MFCC | Ensemble of three CNN models trained on different representations | 65% | Achieved comparable performance with human, but it seems this dataset is too small and with too few speakers for a DL model relying on large datasets|
+| This project | Raw waveform, Mel Spectrogram, MFCC | Ensemble of three CNN models trained on different representations | 62.5% | Achieved comparable performance with human, but it seems this dataset is too small and with too few speakers for a DL model relying on large datasets|
 | Sivanagaraja et al. 2017 | Raw waveform | Multiple convolution branches with different downsampling scales | 50.28% Accuracy | |
 
 ## IEMOCAP
