@@ -1,8 +1,10 @@
+Project refactor is completed
 
-# DL models: 
-Add training graph creation in train_model or evaluate
+I could extend the pipeline with API functionality, such as Flask API
 
-Logistic regression classifiers:  Refactor as necessary. upload csvs as necessary.
+I could Add training history graph creation in train_model or evaluate
 
-Readme: More information, references, etc. 
+
+Readme improvements/additions: More information, research, etc
+Divide the readme into multiple readable files instead
 
