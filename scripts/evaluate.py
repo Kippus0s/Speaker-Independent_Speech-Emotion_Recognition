@@ -28,7 +28,6 @@ def save_preds_and_true(model, filename, test_ds):
 
     os.makedirs("model_predictions", exist_ok=True)
     preds = model.predict(test_ds)
-    np.save(str(filename) + "_preds", preds)
     np.save(os.path.join(root_dir, "model_predictions", filename + "_preds.npy"), preds)
 
     # Extract true labels for test set
