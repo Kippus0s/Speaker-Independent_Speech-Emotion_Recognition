@@ -9,17 +9,26 @@ All scripts are designed to be cross-platform. However as of now tensorflow is e
 
 1. Download the dataset(s).
    
-2. Extract the dataset(s) into the same project directory, the upper-most folder for each each dataset your project directory "EmoDB" , "IEMOCAP_full_release_withoutVideos" ,
+2. Extract the dataset(s) into your project root directory, preserving the original dataset structure as follows: 
+```
+Project_root/EmoDB/wav/audiofile.wav
+Project_root/IEMOCAP/IEMOCAP_full_release_withoutVideos/IEMOCAP_full_release/Session1/etc...
+Project_root/SAVEE/AudioData/JE/audiofile.wav 
+Project_root/RAVDESS/Actor_01/audiofile.wav the upper-most folder for each each dataset your project directory
+It is essential this is performed as above, as file paths are used rather than recursively scanning the directory for filenames, as certain datasets (namely IEMOCAP) have multiple identical files in different folders
+
+```
+
 "RAVDESS" and "SAVEE", which should be the case if you simply extracted the dataset archives directly into your project directory.
 
-3. Download the csv files relevant for the datasets you are interested in, including: emodb.csv iemocap.csv savee.csv and ravdess.csv, place these csv files in your project directory
+4. Download the csv files relevant for the datasets you are interested in, including: emodb.csv iemocap.csv savee.csv and ravdess.csv, place these csv files in your project directory
 on the same level as the dataset folders.
 Do not modify the original dataset's files or directory structure
 
-4. To create the baseline models using the traditional ML approach with openSMILE, run train_baselines.py
+5. To create the baseline models using the traditional ML approach with openSMILE, run train_baselines.py
 See train_baselines.py for instructions and commandline argument explanations. 
 
-5. Deep Learning model preprocesssing and training To test a model, you must first preprocess the dataset
+6. Deep Learning model preprocesssing and training To test a model, you must first preprocess the dataset
    This is performed via preprocess_dataset.py, the arguments required are given and explained within that script.
    
 7. Train the model using train_model.py, again from the commandline
