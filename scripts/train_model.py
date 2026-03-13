@@ -198,7 +198,7 @@ def main(args):
     # Saving training weights, history, plotting confusion matrix and saving the image, 
     # and rendering a class-by-class accuracy report
     filename = str(DATASET) + "_" + str(DATATYPE)
-    if args.filename is not None:
+    if args.output is not None:
         filename = str(DATASET) + "_" + str(DATATYPE) + filename_suffix 
     save_weight_history(model,history,filename,test_ds)
     save_preds_and_true(model, filename, test_ds)
