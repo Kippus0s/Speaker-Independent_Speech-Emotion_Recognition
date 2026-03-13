@@ -1,7 +1,7 @@
 | Model Name       | Dataset  | Preprocessing                               | Sample rate | Duration | Batch size | Max epochs | Class-Weight Normalisation | Accuracy |
 |-----------------|---------|--------------------------------------------|------------|---------|------------|------------|---------------------------|---------|
-| emodb_wav       | EmoDB| Z-score normalisation and duration normalisation | 16000      | 4       | 16         | 50         | 1                         | 70.07% |
-| emodb_mel       | EmoDB| Z-score normalisation and duration normalisation | 16000      | 4       | 16         | 100        | 0                         | 62.00% |
+| emodb_wav       | EmoDB| Z-score normalisation and duration normalisation | 16000      | 4       | 16         | 50         | 1                         | 72.41% |
+| emodb_mel       | EmoDB| Z-score normalisation and duration normalisation | 16000      | 4       | 4         | 100        | 0                         | 67.94% |
 | emodb_mfcc      | EmoDB   | Z-score normalisation and duration normalisation | 16000      | 4       | 4          | 100        | 0                         | 89.67% |
 | emodb_ensemble  | EmoDB   | N/A                                        | N/A        | N/A     | N/A        | N/A        | N/A                       | 87.93% |
 | ravdess_wav     | RAVDESS | duration normalisation                      | 16000      | 4       | 16         | 50         | 1                         | 46.67% |
