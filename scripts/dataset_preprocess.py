@@ -119,8 +119,7 @@ def get_dataset_paths(which_dataset):
         csv_path = os.path.join(root_dir, "csv", "ravdess.csv")
         
     elif which_dataset == "savee":
-        dataset_name = "SAVEE"
-        
+        dataset_name = "SAVEE"        
         DATASET_PATH = os.path.join(root_dir, "datasets", dataset_name, "AudioData")
         csv_path = os.path.join(root_dir, "csv", "savee.csv")
         
@@ -179,7 +178,7 @@ def save_output(wave, filename, out_path, SAMPLE_RATE):
 
 
 # Main dataset preprocessing functions     
-def data_split(which_dataset, df, DATASET_PATH):
+def data_split(which_dataset, dataset_name, df, DATASET_PATH):
           val_speaker = DATASET_SPEAKER_DEFAULTS[which_dataset]['val_speaker']
           test_speaker = DATASET_SPEAKER_DEFAULTS[which_dataset]['test_speaker']
           # Split based on speaker column
@@ -191,13 +190,13 @@ def data_split(which_dataset, df, DATASET_PATH):
           if not os.path.exists(DATASET_PATH):
                os.makedirs(DATASET_PATH)
                
-     
-
-          df_train.to_csv(os.path.join(DATASET_PATH, 'train.csv'), index=False)
+          
+          
+          df_train.to_csv(os.path.join(root_dir, dataset_name, 'train.csv'), index=False)
           print(df_train.isna().sum())  # total NaNs per column)
-          df_val.to_csv(os.path.join(DATASET_PATH,'val.csv'), index=False)
+          df_val.to_csv(os.path.join(root_dir, dataset_name, 'val.csv'), index=False)
           print(df_val.isna().sum())  # total NaNs per column)
-          df_test.to_csv(os.path.join(DATASET_PATH,'test.csv'), index=False)
+          df_test.to_csv(os.path.join(root_dir, dataset_name, 'test.csv'), index=False)
           print(df_test.isna().sum())  # total NaNs per column)
 
           print(f"Train samples: {len(df_train)}")
@@ -385,7 +384,7 @@ def main():
         if args.output is not None       
     else ('norm_and_fixedduration' if z_score == 'y' else 'fixedduration')
     )
-    out_path = os.path.normpath(os.path.join(dataset_name, output_dir))
+    out_path = os.path.normpath(os.path.join(root_dir, "datasets", dataset_name, output_dir))
 
     os.makedirs(out_path, exist_ok=True)
 
@@ -394,7 +393,7 @@ def main():
 
     
     # Run the main preprocessing functions in order
-    data_split(which_dataset, df, DATASET_PATH)
+    data_split(which_dataset, dataset_name, df, DATASET_PATH)
     norm_script(which_dataset, z_score, DATASET_PATH, dataset_name, SAMPLE_RATE, SAMPLE_DURATION, csv_path, out_path, output_arg, df)
     mel_mfcc(out_path, which_dataset, SAMPLE_RATE, df, output_arg)
 
