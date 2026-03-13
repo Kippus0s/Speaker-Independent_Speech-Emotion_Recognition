@@ -123,7 +123,7 @@ IEMOCAP appeared to the most popular dataset for SI SER, and I found the largest
 |------|--------------------|-------------|------------------|------|
 | Amjad et al. 2021 | Mel Spectrogram | Pre-trained AlexNet for feature extraction, CFS for feature selection, traditional ML techniques compared with MLP for classification | 92.65% WAR | MLP classifier performed best for EmoDB |
 | Xu et al. 2022 | Mel Spectrogram, MFCC, handcrafted features | Feature vectors from three models concatenated; fourth model trained with fully connected layer | 90.61% Accuracy | |
-| Farooq et al. 2020 | Mel Spectrogram | AlexNet feature extraction, CFS feature selection, classification via MLP or traditional ML | 90.50% WAR | MLP gave best result |
+| Farooq et al. 2020 | Mel Spectrogram | AlexNet feature extraction, CFS feature selection, classification via MLP or traditional ML | 90.50% WAR | MLP performed best |
 | This project | Raw waveform, Mel Spectrogram, MFCC | Ensemble of three CNN models separately trained on each representation | 87.93% Accuracy | |
 | Sayed et al. 2025 | Wavelet Scaled Spectrogram | CNN + LSTM | 87.78% Accuracy | Mean of 3 folds |
 | Human | — | — | 86% Average Unweighted Accuracy | Mean from human evaluation results (Burkhardt, 2005) |
@@ -137,7 +137,7 @@ IEMOCAP appeared to the most popular dataset for SI SER, and I found the largest
 |------|--------------------|-------------|------------------|------|
 | Amjad et al. 2021 | Mel Spectrogram | Pre-trained AlexNet feature extraction, CFS feature selection, classification with MLP or traditional ML | 82.75% WAR | MLP performed best |
 | Sayed et al. 2025 | Wavelet Scaled Spectrogram | CNN + LSTM | 73.75% Accuracy | Average of 3 folds |
-| Farooq et al. 2020 | Mel Spectrogram | AlexNet feature extraction + CFS + ML classifiers | 73.50% | MLP gave best result |
+| Farooq et al. 2020 | Mel Spectrogram | AlexNet feature extraction + CFS + ML classifiers | 73.50% | MLP performed best |
 | This project| Raw waveform, Mel Spectrogram, MFCC | Ensemble of three CNN models trained on each representation | 62.5% | |
 | Human | — | — | 62% Accuracy | |
 | Rintala 2024 | Raw audio | CNN + LSTM with parallel branches | 61.67% Accuracy | Based on Latif (2019) |
@@ -156,7 +156,7 @@ IEMOCAP appeared to the most popular dataset for SI SER, and I found the largest
 |------|--------------------|-------------|------------------|------|
 | Amjad et al. 2021 | Mel Spectrogram | Pre-trained AlexNet feature extraction, CFS feature selection, classification via ML algorithms | 84% WAR | SVM performed best |
 | Cai et al. 2021 | wav2vec 2.0 | Multi-task learning using pre-trained wav2vec 2.0 encoding | 78.15% WAR | |
-| Farooq et al. 2020 | Mel Spectrogram | AlexNet feature extraction + CFS + ML classifiers | 73.50% WAR | SVM gave best result |
+| Farooq et al. 2020 | Mel Spectrogram | AlexNet feature extraction + CFS + ML classifiers | 73.50% WAR | SVM performed best |
 | Xu et al. 2022 | Mel Spectrogram, MFCC, handcrafted features | Feature concatenation from three models with additional fully connected model | 73.42% Unweighted Accuracy | |
 | Xu et al. 2024 | Spectrogram | GRU with multi-head attention | 70.2% UAR | |
 | Chen 2018 | 3D Mel Spectrogram | CNN + LSTM + Attention | 64.74% UAR | |
