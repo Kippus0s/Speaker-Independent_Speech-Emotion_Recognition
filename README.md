@@ -7,37 +7,38 @@ This project was created to prove the integrity of my results, and as an updated
 
 All scripts are designed to be cross-platform. However as of now tensorflow is effectively linux-only due to CUDA compatability, if you circumvent this by disabling such functionality you may see different results to those purported here.
 
-1. Download the SER dataset(s), and download this repository. 
+1. Download the SER dataset(s), and download this repository. (If you are only interested in verifying the post-decision fusion ensemble results, you can simply download the model_predictions folder and scripts from this repository and run ensemble.py from the commnadline using the arguments explained in the comments of ensemble.py)
    
 2. Extract the dataset(s) into your project's "datasets" directory, preserving the original dataset structure as follows: 
-```
-Project_root/datasets/EmoDB/wav/audiofile.wav
-Project_root/datasets/IEMOCAP/IEMOCAP_full_release_withoutVideos/IEMOCAP_full_release/Session1/etc...
-Project_root/datasets/SAVEE/AudioData/JE/audiofile.wav 
-Project_root/datasets/RAVDESS/Actor_01/audiofile.wav the upper-most folder for each each dataset your project directory
-```
-Rather than search for audio files by name, the scripts will iterate over a CSV file which contains a list of all audio samples used, including a path to said file. This is because the directory structure of certain datasets can be quite complex, as they denote dataset metadata such as the speaker identity, or the emotion that the particular sample conveys.
 
-Therefore, It is essential this step is performed so your dataset structure is as above. This is because file paths are used to directly access audio samples, and the path to said filenames needs to match that of the paths in the CSV file for each dataset. 
+   ```Project_root/datasets/EmoDB/wav/audiofile.wav
+   Project_root/datasets/IEMOCAP/IEMOCAP_full_release_withoutVideos/IEMOCAP_full_release/Session1/etc...
+   Project_root/datasets/SAVEE/AudioData/JE/audiofile.wav 
+   Project_root/datasets/RAVDESS/Actor_01/audiofile.wav the upper-most folder for each each dataset your project directory
+   ```
 
-For example, make sure you do not have duplicate parent directory for a dataset such as "EmoDB/EmoDB/wav/etc" and IEMOCAP's root directory is IEMOCAP and not "IEMOCAP_full_release_without..."
-For SAVEE,RAVDESS and EmoDB you can simply exctract the dataset archives you obtained in step 1 into the datasets folder and the structure will be identical without any user intervention required.
+   Rather than search for audio files by name, the scripts will iterate over a CSV file which contains a list of all audio samples used, including a path to said file. This is because the directory structure of certain datasets can be quite complex, as they denote dataset      metadata such as the speaker identity, or the emotion that the particular sample conveys.
 
-Special note for IEMOCAP: You should create an "IEMOCAP" directory inside your "datasets" folder and extract the dataset there. Depending on the version of IEMOCAP you have acquired, such as the version including video, you may need to modify the upper level folders slightly, this will be extremely simple, yet easier and safer than modifying the file paths stored in each row in the iemocap.csv that dataset_preprocess.py refers to. Simply refer to the structure I have outlined above for IEMOCAP, and make that your own is identical.
+   Therefore, It is essential this step is performed so your dataset structure is as above. This is because file paths are used to directly access audio samples, and the path to said filenames needs to match that of the paths in the CSV file for each dataset. 
+
+   For example, make sure you do not have duplicate parent directory for a dataset such as "EmoDB/EmoDB/wav/etc" and IEMOCAP's root directory is IEMOCAP and not "IEMOCAP_full_release_without..."
+   For SAVEE,RAVDESS and EmoDB you can simply exctract the dataset archives you obtained in step 1 into the datasets folder and the structure will be identical without any user intervention required.
+
+   **Special note for IEMOCAP:** You should create an "IEMOCAP" directory inside your "datasets" folder and extract the dataset there. Depending on the version of IEMOCAP you have acquired, such as the version including video, you may need to modify the upper level folders         slightly, this will be extremely simple, yet easier and safer than modifying the file paths stored in each row in the iemocap.csv that dataset_preprocess.py refers to. Simply refer to the structure I have outlined above for IEMOCAP, and make that your own is        identical.
 
 3. Download the csv files relevant for the datasets you are interested in, including: emodb.csv iemocap.csv savee.csv and ravdess.csv, place these csv files in your project directory
-on the same level as the dataset folders.
-Do not modify the original dataset's files or directory structure
+   on the same level as the dataset folders.
+   Do not modify the original dataset's files or directory structure
 
-4. To create the baseline models using the traditional ML approach with openSMILE, run train_baselines.py
-See train_baselines.py for instructions and commandline argument explanations. 
+4. To create the baseline models that utilise the traditional ML approach with openSMILE, run train_baselines.py
+See train_baselines.py for instructions and explanations of the necessary arguments
 
-5. Deep Learning model preprocesssing and training To test a model, you must first preprocess the dataset
-   This is performed via preprocess_dataset.py, the arguments required are given and explained within that script.
+5. For the Deep Learning modes, you must first preprocess the dataset. This is performed with preprocess_dataset.py, the arguments required are given and explained within that script's source code.
+   To recreate my results refer to the DL_Models.md documentation in /models/ and select the appropriate sample rate and sample duration, for a given model. Depending on the dataset, it may also be neccesary to perform this step twice with and without Z-score normalisation    on the dataset, as certain models benefited from this, while others did not.
    
-6. Train the model using train_model.py, again from the commandline
+7. Train the model using train_model.py - If you wish to recreate my results refer to the DL_Models.md document in /models/ and input the arguments I provide for a given model.
 
-7. Finally, once you have have trained mulitple models, you can create and test an post-decision ensemble using ensemble.py
+8. Finally, once you have have trained mulitple models, you can create and test an post-decision ensemble using ensemble.py
    The training script will have saved predictions in a fixed format and  these will be located and used by ensemble.py depending
    on the models specified.
 
