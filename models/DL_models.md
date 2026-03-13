@@ -8,10 +8,10 @@
 | ravdess_mel     | RAVDESS | Z-score normalisation and duration normalisation | 16000      | 4       | 16         | 100        | 1                         | 60.00% |
 | ravdess_mfcc    | RAVDESS | Z-score normalisation and duration normalisation | 16000      | 4       | 16         | 100        | 1                         | 53.33% |
 | RAVDESS_ensemble| RAVDESS | N/A                                        | N/A        | N/A     | N/A        | N/A        | N/A                       | 62.50% |
-| savee_wav       | SAVEE   | Z-score normalisation and duration normalisation | 16000      | 5       | 16         | 20         | 0                         | 65.00% |
+| savee_wav       | SAVEE   | Z-score normalisation and duration normalisation | 16000      | 5       | 16         | 20         | 0                         | 52.50% |
 | savee_mel       | SAVEE   | Z-score normalisation and duration normalisation | 16000      | 5       | 16         | 100        | 1                         | 45.83% |
 | savee_mfcc      | SAVEE   | Z-score normalisation and duration normalisation | 16000      | 5       | 4          | 46         | 0                         | 44.17% |
-| SAVEE_ensemble  | SAVEE   | N/A                                        | N/A        | N/A     | N/A        | N/A        | N/A                       | 65.00% |
+| SAVEE_ensemble  | SAVEE   | N/A                                        | N/A        | N/A     | N/A        | N/A        | N/A                       | 62.50% |
 | iemocap_wav     | IEMOCAP | Only fixed duration normalisation           | 16000      | 5       | 16         | 50         | 1                         | 52.53% |
 | iemocap_mel     | IEMOCAP | Z-score normalisation and duration normalisation | 16000      | 7       | 16         | 100        | 1                         | 45.68% |
 | iemocap_mfcc    | IEMOCAP | Z-score normalisation and duration normalisation | 16000      | 7       | 4          | 100        | 1                         | 46.43% |
