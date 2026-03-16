@@ -88,7 +88,7 @@ The study also demonstrates that even a simple post-decision ensemble can improv
 | Introductory Paper | Burkhardt, 2005 | Jackson, 2008 | Busso, 2008 | Livingstone, 2018 |
 
 # Traditional-ML Model Accuracy 
-All classifiers used features extracted from 4 seconds of audio only, at a sample rate of 16000kHz
+All classifiers used features extracted from 4 seconds of audio only, at a sample rate of 16000Hz.
 DL models later used longer samples at times, but at the baseline stage my concern was with parity among the datasets
 | Dataset | Accuracy |
 | --- | ----
