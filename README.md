@@ -173,7 +173,7 @@ IEMOCAP appeared to the most popular dataset for SI SER, and I found the largest
 
 
 
-### References
+# References
 Amjad, A., Khan, L. and Chang, H.-T. (2021) ‘Effect on speech emotion classification of a feature selection approach using a convolutional neural network’, PeerJ Computer Science, 7, p. e766. https://doi.org/10.7717/peerj-cs.766  
 
 Cai, X. et al. (2021) ‘Speech Emotion Recognition with Multi-Task Learning’, Interspeech 2021. https://doi.org/10.21437/interspeech.2021-1852  
