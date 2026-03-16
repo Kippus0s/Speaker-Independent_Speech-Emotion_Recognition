@@ -88,8 +88,8 @@ The study also demonstrates that even a simple post-decision ensemble can improv
 | Introductory Paper | Burkhardt, 2005 | Jackson, 2008 | Busso, 2008 | Livingstone, 2018 |
 
 # Traditional-ML Model Accuracy 
-All classifiers used features extracted from 4 seconds of audio only, at a sample rate of 16000Hz.
-DL models later used longer samples at times, but at the baseline stage my concern was with parity among the datasets
+All classifiers used features extracted from 4 seconds of audio only, at a sample rate of 16000Hz. Heuristic features were extracted using openSMILE and the emobase feature set.
+
 | Dataset | Accuracy |
 | --- | ----
 | emoDB | 68.96% |
@@ -107,7 +107,7 @@ DL models later used longer samples at times, but at the baseline stage my conce
 |SAVEE | 65% |  
 |IEMOCAP | 50.45% |  
 
-For details on the individual models which the ensembles were comprised of, and their hyperparameters, see DL_models.txt in /models/
+Details of the individual models forming the ensembles, including their architectures and hyperparameters, are available in DL_models.txt located in the /models/ directory.
 
 
 # Comparison With Contemporary Research
