@@ -167,7 +167,7 @@ IEMOCAP appeared to the most popular dataset for SI SER, and I found the largest
 | Fayek et al. 2017 | Raw waveform | CNN end-to-end | 60.89% UAR | Frame-based approach performed best |
 | Latif 2019 | Raw waveform | CNN + LSTM + DNN | 60.23% UAR | Early parallel-branch SER architecture |
 | Vladimir Chernykh 2018 | MFCC + Chroma features | Frame-wise Bi-LSTM | 54% Accuracy | |
-| This project | Raw waveform, Mel Spectrogram, MFCC | Ensemble of three CNN models trained on each representation | 50.45% | The most popular dataset for DL-SER research, the most complex and natural dataset seems to require more complex and intensive approaches than my own|
+| This project | Raw waveform, Mel Spectrogram, MFCC | Ensemble of three CNN models trained on each representation | 50.45% | The most popular dataset for DL-SER research. IEMOCAP is the most natural, and challenging , and seems to require more complex and intensive approaches than my own. |
 | Han, K., Yu, D. and Tashev, I. 2014 | Handcrafted features (MFCC, pitch, delta) | DNN feature extraction + ELM classifier | 48.2% UAR | |
 
 
