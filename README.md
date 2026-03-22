@@ -39,7 +39,7 @@ See train_baselines.py for instructions and explanations of the necessary argume
    
 7. Train the model using train_model.py - If you wish to recreate my results refer to the DL_Models.md document in /models/ and input the arguments I provide for a given model.
 
-8. Finally, once you have have trained multiple models, you can create and test an post-decision ensemble using ensemble.py
+8. Finally, once you have have trained multiple models, you can create and test a post-decision ensemble using ensemble.py
    The training script will have saved predictions in a fixed format and  these will be located and used by ensemble.py depending
    on the models specified.
 
