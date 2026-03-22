@@ -68,7 +68,7 @@ In conclusion, the results support the view that deep learning techniques can ac
 
 However, this work did not evaluate deep learning models that incorporate handcrafted features, despite prior research showing that such approaches can be effective both as standalone models and as part of ensembles combining multiple data representations.
 
-The study also demonstrates that even a simple post-decision ensemble can improve SER performance by combining complementary models. In this case, the models included in the ensemble were selected based on overall accuracy rather than deliberately chosen to maximise diversity in class-level performance. An alternative strategy would be to design or select models that specialise in recognising different emotions, allowing complementary strengths to offset weaknesses that arise when certain emotions are underrepresented.
+The study also demonstrates that even a simple post-decision ensemble can improve SER performance by aggregating the predictions from complementary models. In this case, the models included in the ensemble were selected based on overall accuracy rather than deliberately chosen to maximise diversity in class-level performance. An alternative strategy would be to design or select models that specialise in recognising different emotions, allowing each model's separate strengths to offset eachother's weaknesses.
 
 # Datasets Used for This Project
 ## Dataset Characteristics
