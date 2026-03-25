@@ -34,17 +34,15 @@ Should be a string that will concatenate "s" in smile.process_files.
 Example: "4" → extracts 4 seconds of audio
 """
 
-
-
 dataset = sys.argv[1]
-dataset_name, data_path, dataset_path, csv_path = get_dataset_paths(dataset)
+dataset_name, dataset_path, csv_path = get_dataset_paths(dataset)
 dataset_path = os.path.normpath(dataset_path)
 df = pd.read_csv(csv_path)
 SAMPLE_RATE = sys.argv[2]
 SAMPLE_DURATION = sys.argv[3]
 #Loading some files from EmoDB note the path doesnt need EmoDB/archive I guess because "emodb" is the first parameter
 
-def extract_features(dataset_name, df, SAMPLE_RATE):
+def extract_features(df, SAMPLE_RATE):
     db = audformat.Database(name=dataset, usage=audformat.define.Usage.UNRESTRICTED)
     # Populate audb dataset, columns become audb database schemes, with proper indexes
     file_index = pd.Index(df['file'], name="file")
@@ -68,13 +66,11 @@ def extract_features(dataset_name, df, SAMPLE_RATE):
 
     
     # Initialising smile class for feature extraction with files and parameters (feature set etc)
-    files = db.files
-    print("len files", len(files))
+    files = db.files    
     if dataset == "savee":
         file_paths = [os.path.join(dataset_path, f + ".wav") for f in db.files]
     else: 
-        file_paths = [os.path.normpath(os.path.join(dataset_path, f)) for f in db.files]
-    print("len file_paths", len(file_paths))
+        file_paths = [os.path.normpath(os.path.join(dataset_path, f)) for f in db.files]    
     smile = opensmile.Smile(
         feature_set=opensmile.FeatureSet.emobase,
         feature_level=opensmile.FeatureLevel.Functionals,
@@ -84,7 +80,7 @@ def extract_features(dataset_name, df, SAMPLE_RATE):
     # After extracting features
     features = smile.process_files(file_paths, ends=[SAMPLE_DURATION+"s"] * len(file_paths),
                                 root=db.root)
-    print("len features", len(features))
+    
 
     # Make the file paths a column instead of index
     features = features.reset_index()  # keeps the index as a column called 'file'
@@ -107,22 +103,13 @@ def extract_features(dataset_name, df, SAMPLE_RATE):
 def data_split(dataset, features_df):
     
     test_speaker = DATASET_SPEAKER_DEFAULTS[dataset]['test_speaker']
-    print(test_speaker)
-    print(len(features_df['speaker']))
+    
+    
 
     # Split based on speaker column
     df_test = features_df[features_df['speaker'].isin(test_speaker)].reset_index(drop=True)
     df_train = features_df[~features_df['speaker'].isin(test_speaker)].reset_index(drop=True)
-
-    # Print basic stats
-    print(f"Train samples: {len(df_train)}")
-    print(f"Test samples (speaker {test_speaker}): {len(df_test)}")
-
-    print("Emotion distribution:")
-    print("Full dataset:", features_df['emotion'].value_counts())
-    print("Train:", df_train['emotion'].value_counts())
-    print("Test:", df_test['emotion'].value_counts())
-
+    
     return df_train, df_test
 
 def train_logreg(df_train, df_test):    
@@ -150,7 +137,7 @@ def train_logreg(df_train, df_test):
     score = classifier.score(X_test, Y_test)
     return score
 
-features_df = extract_features(dataset, df, SAMPLE_RATE)
+features_df = extract_features(df, SAMPLE_RATE)
 df_train, df_test = data_split(dataset, features_df)
 score = train_logreg(df_train, df_test)    
 print(score)
