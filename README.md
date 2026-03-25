@@ -1,5 +1,5 @@
 # Speaker-Independent Speech Emotion Recognition
-For the final project of my Bachelor's of Science in Computing & IT, I worked on a Machine Learning (ML) project entitled "Investigating Machine Learning and Deep Learning approaches to Speech Emotion Recognition".
+This project is an adapted and extended version of my Bachelor's final project entitled "Machine Learning and Deep Learning Approaches to Speech Emotion Recognition".
 
 This project was created to prove the integrity of my results, and as an updated and refactored version of the original implementation. The original code has been refactored and reorganised, allowing the same components to work across different datasets, and with command line arguments for modifying hyperparameter values. I believe this project will be of assistance to others undertaking ML-based or ML-assisted research, especially in Speech Emotion Recognition (SER). 
 
