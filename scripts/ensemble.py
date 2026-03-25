@@ -60,19 +60,18 @@ def main(args):
     model_names = [args.MODEL1, args.MODEL2, args.MODEL3]
     DATASET = args.DATASET
     # Load predictions and true labels, and aggregate the probabilties
-    model_preds = []
-    for model_name in model_names:
+    model_preds = []    
+    for model_name in model_names:        
         pred_file = os.path.join(predictions_dir, f"{model_name}_preds.npy")
         if not os.path.exists(pred_file):
             raise FileNotFoundError(f"Prediction file not found: {pred_file}")
-        preds = np.load(pred_file)
-        print(pred_file, preds.shape)
+        preds = np.load(pred_file)        
         model_preds.append(preds)
 
     # Average predictions (decision level fusion)
     fused_preds = sum(model_preds) / len(model_preds)
     classes = np.argmax(fused_preds, axis=1)
-    true_labels = np.load(os.path.join("model_predictions", args.MODEL3 + "_true.npy"))
+    true_labels = np.load(os.path.join(root_dir, "model_predictions", args.MODEL3 + "_true.npy"))
     acc = accuracy_score(true_labels, classes)
     print(f'Accuracy: {acc:.4f}')
 
