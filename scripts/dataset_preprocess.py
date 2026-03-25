@@ -97,8 +97,8 @@ def parse_args():
 To preprocess and train models I iterate through a CSV rather which contains direct paths to all audio samples
 used in the study, rather than traversing through the original dataset folders, as this is simpler to implement 
 
-The CSV files have been provided in the csv directory 
-
+The CSV files have been provided. 
+However, The CSV files needs to be in same root folder as this script so the functions can find it. 
 """
 
 def get_dataset_paths(which_dataset):   
@@ -131,9 +131,10 @@ def get_dataset_paths(which_dataset):
 
 def listwavs(dataframe, SAMPLE_RATE, dataset_name, dataset_path):
      list_wavs = []
-     for file in dataframe['file']:
+     total = len(dataframe)
+     for i, file in enumerate(dataframe['file'],start=1):
           audio_file_path = audio_file_parser(file, dataset_name, dataset_path)
-          print("audio_file_path = ", audio_file_path)
+          print(f"Calculating training data mean and std for z-score normalisation: {i}/{total}")
           x, _ = lr.load(audio_file_path, sr=SAMPLE_RATE)
           list_wavs.append(x)
      return list_wavs
@@ -166,7 +167,6 @@ def save_output(wave, filename, out_path, SAMPLE_RATE):
      subdirs = os.path.dirname(os.path.normpath(filename))            
      filename = os.path.splitext(os.path.basename(filename))[0] + ".wav"     
      save_dir = os.path.join(out_path, subdirs)      
-     print("save_dir =", save_dir)     
      try:
           os.makedirs(save_dir, exist_ok=True)          
      except Exception as e:
@@ -188,31 +188,15 @@ def data_split(which_dataset, dataset_name, df, DATASET_PATH):
           df_train = df_train[~df_train['speaker'].isin(test_speaker)].reset_index(drop=True)
 
           if not os.path.exists(DATASET_PATH):
-               os.makedirs(DATASET_PATH)
-               
+               os.makedirs(DATASET_PATH)              
           
           
           df_train.to_csv(os.path.join(root_dir, "datasets", dataset_name, 'train.csv'), index=False)
-          print(df_train.isna().sum())  # total NaNs per column)
-          df_val.to_csv(os.path.join(root_dir, "datasets", dataset_name, 'val.csv'), index=False)
-          print(df_val.isna().sum())  # total NaNs per column)
-          df_test.to_csv(os.path.join(root_dir,"datasets", dataset_name,  'test.csv'), index=False)
-          print(df_test.isna().sum())  # total NaNs per column)
-
-          print(f"Train samples: {len(df_train)}")
-          print(f"Validation samples (speaker {val_speaker}): {len(df_val)}")
-          print(f"Test samples (speaker {test_speaker}): {len(df_test)}")
-
-          print(df['emotion'].value_counts())
-          print(df_train['emotion'].value_counts())
-          print(df_val['emotion'].value_counts())
-          print(df_test['emotion'].value_counts())
-
-          print(len(df))
-          print(len(df_train))
-          print(len(df_val))
-          print(len(df_test))
           
+          df_val.to_csv(os.path.join(root_dir, "datasets", dataset_name, 'val.csv'), index=False)
+          
+          df_test.to_csv(os.path.join(root_dir,"datasets", dataset_name,  'test.csv'), index=False)
+                    
   
 # Audio sample duration andsample rate adjustment, and optional z-score normalisation.
 def norm_script(which_dataset, z_score, DATASET_PATH, dataset_name, SAMPLE_RATE, SAMPLE_DURATION, csv_path, out_path, output_arg, df):     
@@ -228,14 +212,14 @@ def norm_script(which_dataset, z_score, DATASET_PATH, dataset_name, SAMPLE_RATE,
      globalaudio = np.concatenate(listwavs(pd.read_csv(os.path.join(dataset_path,"train.csv")), SAMPLE_RATE, dataset_name, DATASET_PATH))
      mean = np.mean(globalaudio)
      std = np.std(globalaudio)
-     print("Progress: global values for z-score normalisation calculated")
 
-
-     for index, filepath in enumerate(pd.read_csv(csv_path)['file'].values):
-          print("file =", filepath)
-
-          audio_file = audio_file_parser(filepath,dataset_name, DATASET_PATH)  
-          print("audio file = ", audio_file)
+     csv_files = pd.read_csv(csv_path)['file'].values 
+     total = len(csv_files)
+     for index, filepath in enumerate(csv_files,start=1):
+          if z_score: 
+               print(f"Applying z-score and sample duration normalisation: {index}/{total}")
+          else: print(f"Normalising sample duration: {index}/{total}")
+          audio_file = audio_file_parser(filepath,dataset_name, DATASET_PATH)            
           y,sr = lr.load(audio_file,sr=SAMPLE_RATE)  
 
           #Normalise via zero mean and 1 unit variance if z-score at this stage is selected
@@ -255,17 +239,15 @@ def norm_script(which_dataset, z_score, DATASET_PATH, dataset_name, SAMPLE_RATE,
                save_output(padded_wave,filepath, out_path, SAMPLE_RATE)             
      
           # Writing out          
-          df.loc[index, str(output_arg)] = os.path.join(out_path, str(filepath))        
-          print(os.path.join(out_path, str(filepath)))   
-          df.to_csv(which_dataset + output_arg + "_preprocessed.csv")
+          df.loc[index-1, str(output_arg)] = os.path.join(out_path, str(filepath)) 
+     output_path = os.path.join(root_dir, "datasets", dataset_name, f"{output_arg}_preprocessed.csv")     
+     df.to_csv(output_path)     
 
      print("Progress: Z-score normalisation and fixing of sample duration completed")
-     print
-
-   
+        
 
 # Deriving Mel Spectrograms and MFCCs from the normalised and duration-adjusted samples, and writing the paths to these new features to a CSV file     
-def mel_mfcc(out_path, which_dataset, SAMPLE_RATE, df, output_arg):
+def mel_mfcc(out_path, which_dataset, dataset_name, SAMPLE_RATE, df, output_arg):
      #Creating Mel and MFCCs. 
      
      # Creating the mel and mfcc directories in the output folder if they do not already exist.
@@ -276,14 +258,15 @@ def mel_mfcc(out_path, which_dataset, SAMPLE_RATE, df, output_arg):
      if not os.path.exists(mfcc_path):
           os.makedirs(mfcc_path)
      
-     csv_path2 = os.path.join(which_dataset + output_arg + "_preprocessed.csv")
+     csv_path2 = os.path.join(root_dir, "datasets", dataset_name, output_arg + "_preprocessed.csv")
             
      file_column = output_arg       
-     
+     csv_files = pd.read_csv(csv_path2)[file_column].values
+     total = len(csv_files)
      # Take the trimmed/padded sound files 
-     for filepath in pd.read_csv(csv_path2)[file_column].values:
-
-          print("file =", filepath)          
+     for i, filepath in enumerate(csv_files,start=1):
+          print(f"Creating Mel Spectrogram and MFCCs: {i}/{total}")
+                
           if which_dataset == "savee":
                filepath_wav = os.path.normpath(filepath)+ ".wav"
           else:
@@ -293,7 +276,7 @@ def mel_mfcc(out_path, which_dataset, SAMPLE_RATE, df, output_arg):
 
           #Create spectrogram
           sgram = librosa.stft(samples,n_fft=NUM_SPECTROGRAM_BINS) 
-          print("sgram created")
+          
 
           # Use the mel-scale instead of raw frequency bins, as the mel scale is more aligned with human perception of sound and is commonly used in speech processing tasks.
           sgram_mag, _ = librosa.magphase(sgram)
@@ -311,7 +294,7 @@ def mel_mfcc(out_path, which_dataset, SAMPLE_RATE, df, output_arg):
           # Get the relative path from the dataset root
           rel_path = os.path.relpath(filepath, start=out_path)  # e.g., 'wav/16b10Wb.wav'
           rel_dir = os.path.dirname(rel_path) 
-          print("rel_dir is",rel_dir)
+          
           filename = os.path.splitext(os.path.basename(filepath))[0]
                          
           mel_save_dir = os.path.join(mel_path, rel_dir)
@@ -326,11 +309,11 @@ def mel_mfcc(out_path, which_dataset, SAMPLE_RATE, df, output_arg):
 
           mel_save_path = os.path.join(mel_save_dir, filename + ".npy") 
           np.save(mel_save_path, mel_sgram)
-          print("saved mel spectrogram to", mel_save_path)
+          
           mfcc_save_path = os.path.join(mfcc_save_dir, filename + ".npy")
           mfccs = librosa.feature.mfcc(S=mel_sgram,sr=SAMPLE_RATE,n_mfcc=N_MFCC)
           np.save(mfcc_save_path, mfccs)
-          print("saved", mfccs, "MFCCs to ", mfcc_save_path)
+          
           
           
      #Write path to the mel-spectrograms and mffcs for each utterance to the appropriate row in the CSV
@@ -395,7 +378,7 @@ def main():
     # Run the main preprocessing functions in order
     data_split(which_dataset, dataset_name, df, DATASET_PATH)
     norm_script(which_dataset, z_score, DATASET_PATH, dataset_name, SAMPLE_RATE, SAMPLE_DURATION, csv_path, out_path, output_arg, df)
-    mel_mfcc(out_path, which_dataset, SAMPLE_RATE, df, output_arg)
+    mel_mfcc(out_path, which_dataset, dataset_name, SAMPLE_RATE, df, output_arg)
 
 if __name__ == "__main__":
     main()
